@@ -1,58 +1,102 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
-  </div>
+<div class="hello">
+  <h1>{{ msg }}</h1>
+</div>
+<v-btn color="primary" @click="addCargo()" > Add </v-btn>
+
+<add-dialog />
+
+
+<div id="container"></div>
+
+
+<v-stage ref="stage" :config="stageSize">
+  <v-layer ref="layer">
+    <v-rect v-for="item in cargo"
+            
+            :key="item.id"
+            :config="{
+                     x: Math.floor(Math.random() * 300),
+                     y: Math.floor(Math.random() * 300),
+                     width: item.dimx,
+                     height: item.dimy,
+                     fill: 'red',
+                     shadowBlur: 10,
+                     draggable: true
+                     }"
+            />
+  </v-layer>
+</v-stage>
 </template>
 
+
+
 <script>
+//import Konva from "konva";
+
+import AddDialog from './AddDialog.vue'
+
+
+const width = window.innerWidth;
+const height = window.innerHeight;
+
+
+
 export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
-  }
-}
+    name: 'HelloWorld',
+    components: {
+        AddDialog
+    },
+    
+    mounted() {
+        this.$refs.stage.getStage().container().style.backgroundColor='#f0f0f0';
+        // var shape = new Konva.Rect({x: 0, y: 30, width: 50, height: 90, stroke: "red", strokewidth: 1});
+        // this.$refs.layer.getNode().getLayer().add(shape);
+        // this.$refs.layer.getNode().getLayer().add(new Konva.Rect({x: 0, y: 30, width: 50, height: 90, stroke: "red", strokewidth: 1}));
+    },
+    data() {
+        return {
+            dialog: false,
+            stageSize: {
+                container: 'container',
+                width: width,
+                height: height,
+            },
+            cargo: [{id: 12, dimx: 10, dimy: 20},
+                    {id: 34, dimx: 10, dimy: 30},
+                    {id: 56, dimx: 20, dimy: 40},
+                    {id: 78, dimx: 50, dimy: 40},
+                    {id: 90, dimx: 5, dimy: 11}],
+        };
+    },
+    methods: {
+        say() {
+            console.log("open dialog clicked");
+        },
+        addCargo() {
+            this.cargo.push({id: 99, dimx: 100, dimy: 200});
+        }
+    }
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h3 {
-  margin: 40px 0 0;
+    margin: 40px 0 0;
 }
 ul {
-  list-style-type: none;
-  padding: 0;
+    list-style-type: none;
+    padding: 0;
 }
 li {
-  display: inline-block;
-  margin: 0 10px;
+    display: inline-block;
+    margin: 0 10px;
 }
 a {
-  color: #42b983;
+    color: #42b983;
 }
+
 </style>
+
+

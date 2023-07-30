@@ -1,16 +1,15 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <EzLoading/>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import EzLoading from './components/EzLoading.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
-  }
+    EzLoading
+  },
 }
 </script>
 
@@ -21,6 +20,8 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 30px;
 }
+
+
 </style>

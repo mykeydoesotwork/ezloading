@@ -9,11 +9,16 @@
   },
   "dependencies": {
     "core-js": "^3.8.3",
-    "vue": "^3.2.13"
+    "konva": "^9.2.0",
+    "lodash": "^4.17.21",
+    "vue": "^3.2.13",
+    "vue-konva": "^3.0.2",
+    "vuetify": "^3.3.6"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
     "@babel/eslint-parser": "^7.12.16",
+    "@mdi/font": "^7.2.96",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
