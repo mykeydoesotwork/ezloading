@@ -140,11 +140,11 @@
           :config="{
                    x: this.truck.originx,
                    y: this.truck.originy,
-                   width: (item.units === 'Imperial') ? Math.max(5, 0.1 * Math.round(item.dimx) * this.scaleFactor) : Math.max(5, 0.1 * Math.round(item.dimx) * 0.3937 * this.scaleFactor),
-                   height: (item.units === 'Imperial') ?  Math.max(5, 0.1 * Math.round(item.dimx) * this.scaleFactor) : Math.max(5, 0.1 * Math.round(item.dimx) * 0.3937 * this.scaleFactor),
+                   width: (item.units === 'Imperial') ? Math.max(5, .005 * Math.round(item.dimx*item.dimy) * this.scaleFactor) : Math.max(5, .005 * Math.round(item.dimx*0.3937*item.dimy*0.3937) * this.scaleFactor),
+                   height: (item.units === 'Imperial') ?  Math.max(5, .005 * Math.round(item.dimx*item.dimy) * this.scaleFactor) : Math.max(5, .005 * Math.round(item.dimx*0.3937*item.dimy*0.3937) * this.scaleFactor),
                    fillPatternImage: this.closeIcon,
-                   fillPatternScaleX: (item.units === 'Imperial') ? Math.max(5, 0.1 * Math.round(item.dimx) * this.scaleFactor)/16 : Math.max(5, 0.1 * Math.round(item.dimx) * 0.3937 * this.scaleFactor)/16,
-                   fillPatternScaleY: (item.units === 'Imperial') ?  Math.max(5, 0.1 * Math.round(item.dimx) * this.scaleFactor)/16 : Math.max(5, 0.1 * Math.round(item.dimx) * 0.3937 * this.scaleFactor)/16,
+                   fillPatternScaleX: (item.units === 'Imperial') ? Math.max(5, .005 * Math.round(item.dimx*item.dimy) * this.scaleFactor)/16 : Math.max(5, .005 * Math.round(item.dimx*0.3937*item.dimy*0.3937) * this.scaleFactor)/16,
+                   fillPatternScaleY: (item.units === 'Imperial') ?  Math.max(5, .005 * Math.round(item.dimx*item.dimy) * this.scaleFactor)/16 : Math.max(5, .005 * Math.round(item.dimx*0.3937*item.dimy*0.3937) * this.scaleFactor)/16,
                    }"
           />
         
@@ -154,14 +154,14 @@
           @mouseover="mouseoverPointer"
           @mouseout="mouseoutPointer"
           :config="{
-                   x:(item.units === 'Imperial') ?  this.truck.originx + (Math.round(item.dimx) * this.scaleFactor) - Math.max(5, 0.1 * Math.round(item.dimx) * this.scaleFactor) 
-                      : this.truck.originx + (Math.round(item.dimx) * 0.3937 * this.scaleFactor) - Math.max(5, 0.1 * Math.round(item.dimx) * 0.3937 * this.scaleFactor),
+                   x:(item.units === 'Imperial') ?  this.truck.originx + (Math.round(item.dimx) * this.scaleFactor) - Math.max(5, 0.005 * Math.round(item.dimx*item.dimy) * this.scaleFactor) 
+                      : this.truck.originx + (Math.round(item.dimx) * 0.3937 * this.scaleFactor) - Math.max(5, 0.005 * Math.round(item.dimx*0.3937*item.dimy*0.3937) * this.scaleFactor),
                    y: this.truck.originy,
-                   width: (item.units === 'Imperial') ? Math.max(5, 0.1 * Math.round(item.dimx) * this.scaleFactor) : Math.max(5, 0.1 * Math.round(item.dimx) * 0.3937 * this.scaleFactor),
-                   height: (item.units === 'Imperial') ? Math.max(5, 0.1 * Math.round(item.dimx) * this.scaleFactor) : Math.max(5, 0.1 * Math.round(item.dimx) * 0.3937 * this.scaleFactor),
+                   width: (item.units === 'Imperial') ? Math.max(5, .005 * Math.round(item.dimx*item.dimy) * this.scaleFactor) : Math.max(5, .005 * Math.round(item.dimx*0.3937*item.dimy*0.3937) * this.scaleFactor),
+                   height: (item.units === 'Imperial') ? Math.max(5, .005 * Math.round(item.dimx*item.dimy) * this.scaleFactor) : Math.max(5, .005 * Math.round(item.dimx*0.3937*item.dimy*0.3937) * this.scaleFactor),
                    fillPatternImage: this.rotateIcon,
-                   fillPatternScaleX: (item.units === 'Imperial') ? Math.max(5, 0.1 * Math.round(item.dimx) * this.scaleFactor)/16 : Math.max(5, 0.1 * Math.round(item.dimx) * 0.3937 * this.scaleFactor)/16,
-                   fillPatternScaleY: (item.units === 'Imperial') ? Math.max(5, 0.1 * Math.round(item.dimx) * this.scaleFactor)/16 : Math.max(5, 0.1 * Math.round(item.dimx) * 0.3937 * this.scaleFactor)/16,
+                   fillPatternScaleX: (item.units === 'Imperial') ? Math.max(5, .005 * Math.round(item.dimx*item.dimy) * this.scaleFactor)/16 : Math.max(5, .005 * Math.round(item.dimx*0.3937*item.dimy*0.3937) * this.scaleFactor)/16,
+                   fillPatternScaleY: (item.units === 'Imperial') ? Math.max(5, .005 * Math.round(item.dimx*item.dimy) * this.scaleFactor)/16 : Math.max(5, .005 * Math.round(item.dimx*0.3937*item.dimy*0.3937) * this.scaleFactor)/16,
                    }"
           />
         
