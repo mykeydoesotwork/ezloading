@@ -38,7 +38,8 @@
                  <v-container class="ma-2" v-for="item in this.generateNavDrawerList" :key="item.title">
                    <v-row >
                      <v-col cols="2" align-self="center" class="ma-0 pa-0" :style="{userSelect: 'none'}">
-                       <v-btn variant="tonal" density="compact" icon="mdi-trash-can-outline" color="primary" @click="say()"></v-btn>
+                       <v-btn variant="tonal" density="compact" icon="mdi-trash-can-outline" color="primary"
+                              @click="deleteCargoCategory(item)" @tap="deleteCargoCategory(item)"></v-btn>
                      </v-col>
                      <v-col cols="5" align-self="center" class="ma-0 pa-0" :style="{userSelect: 'none'}">
                        {{ item.title }}
@@ -321,7 +322,7 @@ export default {
             //Captured event with units: Metric dimx: 80.00 dimy: 120.00
             console.log("this.truck before loadSpaceSet:");
             console.table(this.truck);
-            // truck: {units: "Imperial", originx: 500, originy: 10, dimx: 100, dimy: 200 },
+            // truck: {units: "Imperial", originx: 500, originy: 10, dimx: 100, dimy: 200 }, 
             this.truck = {units: units,
                           originx: this.truck.originx,
                           originy: this.truck.originy,
@@ -334,6 +335,21 @@ export default {
             this.cargo.splice(index, 1);
             console.log(`deleteCargo rectangle clicked or tapped: index: ${index} id: ${item.id} dimx: ${item.dimx} dimy: ${item.dimy}`)
             this.mouseoutPointer(); // restore mouse pointer to default
+        },
+        deleteCargoCategory(drawerItem) {
+            console.log(drawerItem);
+            drawerItem.value.forEach(
+                function (cargoItem) {
+                    console.log("cargoItem");
+                    console.log(cargoItem);
+                    console.log("this.cargo");
+                    console.log(this.cargo);
+                    var foundIndex = this.cargo.findIndex(cargoEl=> (cargoEl.id === cargoItem.id));
+                    if (foundIndex > -1) {
+                        console.log("cargoItem.id " + cargoItem.id + " was found at index " + foundIndex );
+                        this.deleteCargo(cargoItem, foundIndex);
+                    }
+                    }.bind(this));
         },
         rotateCargo(item, index) {
             console.log(`rotateCargo rectangle clicked or tapped before: index: ${index} id: ${item.id} dimx: ${item.dimx} dimy: ${item.dimy}`)
