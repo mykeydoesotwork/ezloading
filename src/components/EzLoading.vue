@@ -1,6 +1,5 @@
 <template>
 
-
 <v-layout>
   <v-app-bar color="primary">
     
@@ -45,13 +44,16 @@
                        {{ item.title }}
                      </v-col>
                      <v-col cols="2" align-self="center" class="ma-0 pa-0" :style="{userSelect: 'none'}">
-                       <v-btn variant="tonal" density="compact" icon="mdi-minus" color="primary" @click="say()"></v-btn>
+                       <v-btn variant="tonal" density="compact" icon="mdi-minus" color="primary"
+                              @click="deleteCargoCategoryItem(item)" @tap="deleteCargoCategoryItem(item)"></v-btn>
                      </v-col>
                      <v-col cols="1" align-self="center" class="ma-0 pa-0" :style="{userSelect: 'none'}">
                        {{ item.value.length }}
                      </v-col>
                      <v-col cols="2" align-self="center" class="ma-0 pa-0" :style="{userSelect: 'none'}">
-                       <v-btn variant="tonal" density="compact" icon="mdi-plus"  color="primary" @click="say()"></v-btn>
+                       <v-btn variant="tonal" density="compact" icon="mdi-plus"  color="primary"
+                              @click="addCargo(item['value'][0]['units'], item['value'][0]['dimx'], item['value'][0]['dimy'])"
+                              @tap="addCargo(item['value'][0]['units'], item['value'][0]['dimx'], item['value'][0]['dimy'])"></v-btn>
                      </v-col>
                    </v-row>
                  </v-container>
@@ -104,70 +106,10 @@
     <template v-for="(item, index) in cargo" :key="item.id">
       <!-- everything in the group is  offset by a 10x10 pixel square in the v-group, -->
       <!-- :cargoId accessible from layer children el: el.attrs.cargoId  -->
-      <v-group :config="{id: 'cargoGroup', x: 10, y: 10, draggable: true}" :cargoId="item.id">
-        <v-rect 
-          :config="{
-                   x: this.truck.originx,
-                   y: this.truck.originy,
-                   width: item.units === 'Imperial' ? Math.round(item.dimx) * this.scaleFactor : Math.round(item.dimx) * 0.3937 * this.scaleFactor,
-                   height: item.units === 'Imperial' ? Math.round(item.dimy) * this.scaleFactor : Math.round(item.dimy) * 0.3937 * this.scaleFactor,
-                   fill: 'yellow',
-                   strokeWidth: 1,
-                   stroke: 'black',
-                   }"
-          />
-        
-        <v-text
-          :config="{
-                   x: this.truck.originx,
-                   y: this.truck.originy,
-                   text: `${item.dimx}${item.units === 'Imperial' ? 'in' : 'cm'} x ${item.dimy}${item.units === 'Imperial' ? 'in' : 'cm'}`,
-                   fontFamily: 'Georgia',
-                   fontSize: 7*this.scaleFactor,
-                   fill: 'black',
-                   wrap: 'none',
-                   width: item.units === 'Imperial' ? Math.max(50*this.scaleFactor, Math.round(item.dimx) * this.scaleFactor) : Math.max(50*this.scaleFactor, Math.round(item.dimx) * 0.3937 * this.scaleFactor),
-                   height: item.units === 'Imperial' ? Math.round(item.dimy) * this.scaleFactor : Math.round(item.dimy) * 0.3937 * this.scaleFactor,
-                   align: 'center',
-                   verticalAlign: 'middle'
-                   }"
-          />
-        
-        <v-rect
-          @tap="deleteCargo(item, index)"
-          @click="deleteCargo(item, index)"
-          @mouseover="mouseoverPointer"
-          @mouseout="mouseoutPointer"
-          :config="{
-                   x: this.truck.originx,
-                   y: this.truck.originy,
-                   width: (item.units === 'Imperial') ? Math.max(5, .005 * Math.round(item.dimx*item.dimy) * this.scaleFactor) : Math.max(5, .005 * Math.round(item.dimx*0.3937*item.dimy*0.3937) * this.scaleFactor),
-                   height: (item.units === 'Imperial') ?  Math.max(5, .005 * Math.round(item.dimx*item.dimy) * this.scaleFactor) : Math.max(5, .005 * Math.round(item.dimx*0.3937*item.dimy*0.3937) * this.scaleFactor),
-                   fillPatternImage: this.closeIcon,
-                   fillPatternScaleX: (item.units === 'Imperial') ? Math.max(5, .005 * Math.round(item.dimx*item.dimy) * this.scaleFactor)/16 : Math.max(5, .005 * Math.round(item.dimx*0.3937*item.dimy*0.3937) * this.scaleFactor)/16,
-                   fillPatternScaleY: (item.units === 'Imperial') ?  Math.max(5, .005 * Math.round(item.dimx*item.dimy) * this.scaleFactor)/16 : Math.max(5, .005 * Math.round(item.dimx*0.3937*item.dimy*0.3937) * this.scaleFactor)/16,
-                   }"
-          />
-        
-        <v-rect
-          @tap="rotateCargo(item, index)"
-          @click="rotateCargo(item, index)"
-          @mouseover="mouseoverPointer"
-          @mouseout="mouseoutPointer"
-          :config="{
-                   x:(item.units === 'Imperial') ?  this.truck.originx + (Math.round(item.dimx) * this.scaleFactor) - Math.max(5, 0.005 * Math.round(item.dimx*item.dimy) * this.scaleFactor) 
-                      : this.truck.originx + (Math.round(item.dimx) * 0.3937 * this.scaleFactor) - Math.max(5, 0.005 * Math.round(item.dimx*0.3937*item.dimy*0.3937) * this.scaleFactor),
-                   y: this.truck.originy,
-                   width: (item.units === 'Imperial') ? Math.max(5, .005 * Math.round(item.dimx*item.dimy) * this.scaleFactor) : Math.max(5, .005 * Math.round(item.dimx*0.3937*item.dimy*0.3937) * this.scaleFactor),
-                   height: (item.units === 'Imperial') ? Math.max(5, .005 * Math.round(item.dimx*item.dimy) * this.scaleFactor) : Math.max(5, .005 * Math.round(item.dimx*0.3937*item.dimy*0.3937) * this.scaleFactor),
-                   fillPatternImage: this.rotateIcon,
-                   fillPatternScaleX: (item.units === 'Imperial') ? Math.max(5, .005 * Math.round(item.dimx*item.dimy) * this.scaleFactor)/16 : Math.max(5, .005 * Math.round(item.dimx*0.3937*item.dimy*0.3937) * this.scaleFactor)/16,
-                   fillPatternScaleY: (item.units === 'Imperial') ? Math.max(5, .005 * Math.round(item.dimx*item.dimy) * this.scaleFactor)/16 : Math.max(5, .005 * Math.round(item.dimx*0.3937*item.dimy*0.3937) * this.scaleFactor)/16,
-                   }"
-          />
-        
-        
-      </v-group>
+      <pallet-konva-group :truck="this.truck" :item="item" :index="index" :scaleFactor="this.scaleFactor"
+                          :lowestYBound="this.lowestYBound()"
+                          @delete-cargo="deleteCargo(item, index)"
+                          @rotate-cargo="rotateCargo(item, index)"/>
     </template>
   </v-layer>
 </v-stage>
@@ -189,6 +131,7 @@ import { groupBy, orderBy, uniqueId } from 'lodash'
 
 import AddDialog from './AddDialog.vue'
 import TruckDialog from './TruckDialog.vue'
+import PalletKonvaGroup from './PalletKonvaGroup.vue'
 
 const width = window.innerWidth;
 const height = window.innerHeight;
@@ -197,7 +140,7 @@ const height = window.innerHeight;
 export default {
     name: 'EzLoading',
     components: {
-        AddDialog, TruckDialog,
+        AddDialog, TruckDialog, PalletKonvaGroup
     },
     
     mounted() {
@@ -279,10 +222,11 @@ export default {
             // console.log(this.$refs.layer.getNode().getLayer().children[0].getClientRect())
             // console.log(this.$refs.layer.getNode().getLayer().children[3].id())
             // console.log(this.$refs.layer.getNode().getLayer().children[3].findOne('Rect').getClientRect())
-            // console.log(this.displayWidth);
+            console.log(this.displayWidth); // returns "desktop" or "mobile"
             // console.log(this.$refs.stage.getStage().width());
             // console.log(this.truckLocationX());
-            console.log(this.lowestYBound());
+            // console.log(this.lowestYBound());
+            
             
         },
         mouseoverPointer () {
@@ -304,17 +248,6 @@ export default {
                              dimy: parseFloat(dimy)});
             console.log("this.cargo after add: ");
             console.table(this.cargo);
-            // console.log(cargoId);
-            // console.log(this.$refs.layer.getNode().getLayer().children);
-            // setTimeout(function(){console.log(this.$refs.layer.getNode().getLayer().children.filter((el)=>(el.attrs.cargoId === cargoId)));}.bind(this),500);
-            if (this.$refs.layer.getNode().getLayer().children.length > 3) {
-                setTimeout(
-                    function(){
-                        var newCargo = this.$refs.layer.getNode().getLayer().children.filter((el)=>(el.attrs.cargoId === cargoId))[0];
-                        newCargo.y(this.lowestYBound());
-                    }.bind(this)
-                    ,50);
-            }
         },
         loadSpaceSet(units, dimx, dimy){
             //console.log("Captured event with units: " + units + " dimx: " + dimx + " dimy: " + dimy);
@@ -349,7 +282,32 @@ export default {
                         console.log("cargoItem.id " + cargoItem.id + " was found at index " + foundIndex );
                         this.deleteCargo(cargoItem, foundIndex);
                     }
-                    }.bind(this));
+                }.bind(this));
+        },
+        deleteCargoCategoryItem(item) {
+            if (item['value'].length <= 1) {
+                console.log("item['value'].length is : " + item['value'].length + "stop deleting");
+                console.log(("the last value of item['value'] is : "
+                             + this.prObj(item['value'][item['value'].length - 1]) +
+                             " with id: " + this.prObj(item['value'][item['value'].length - 1]['id'])));
+                return;
+            } else {
+                // console.log("item['value'].length is : " + item['value'].length);
+                // console.log(("the last value of item['value'] is : "
+                //             + this.prObj(item['value'][item['value'].length - 1]) +
+                //              " with id: " + this.prObj(item['value'][item['value'].length - 1]['id'])));
+                
+                var lastCargoCategoryItem =  item['value'][item['value'].length - 1];
+                var deleteCargoCategoryItemIndex = lastCargoCategoryItem['id'];
+                // console.log(this.prObj(this.cargo));
+                
+                var foundIndex = this.cargo.findIndex(cargoEl=> (cargoEl.id === deleteCargoCategoryItemIndex));
+                if (foundIndex > -1) {
+                    console.log("lastCargoCategoryItem['id'] " + lastCargoCategoryItem['id'] + " was found at index " + foundIndex);
+                    this.deleteCargo(lastCargoCategoryItem, foundIndex);
+                }
+                
+            }
         },
         rotateCargo(item, index) {
             console.log(`rotateCargo rectangle clicked or tapped before: index: ${index} id: ${item.id} dimx: ${item.dimx} dimy: ${item.dimy}`)
@@ -440,8 +398,8 @@ export default {
                     if (el.id() === "cargoGroup") {
                         console.log("data?: " + el.attrs.cargoId + "el.id: " + el.id() +  " y value: " + el.y() +  " height: "
                                     + el.findOne('Rect').getClientRect().height)
-                        }
                     }
+                }
             );
             var allChildren = this.$refs.layer.getNode().getLayer().children;
             var cargoGroupElements = allChildren.filter(el => el.id() === "cargoGroup")
@@ -462,12 +420,27 @@ export default {
                     (el)=> ({title : `${el[0][1]}${el[0][0] === 'Imperial' ? 'in' : 'cm'} x ${el[0][2]}${el[0][0] === 'Imperial' ? 'in' : 'cm'}`,
                              value : el[1]}));
             return navDrawerListArray;
-            // console.log(this.prObj(orderedGroupedCargoArray)); 
-            // [[["Imperial", 5, 11], [{"id": "cargo-30", "units": "Imperial", "dimx": 5, "dimy": 11}]],
-            //  [["Imperial", 10, 20], [{"id": "cargo-29", "units": "Imperial", "dimx": 10, "dimy": 20}]],
-            //  [["Imperial", 10, 30], [{"id": "cargo-27", "units": "Imperial", "dimx": 10, "dimy": 30}]],
-            //  [["Imperial", 20, 40], [{"id": "cargo-26", "units": "Imperial", "dimx": 20, "dimy": 40}]],
-            //  [["Imperial", 50, 40], [{"id": "cargo-28", "units": "Imperial", "dimx": 50, "dimy": 40}]]]
+            // console.log(this.prObj(navDrawerListArray)); 
+            // [{"title": "42in x 42in",
+            //   "value": [{"id": "cargo-3", "units": "Imperial", "dimx": 42, "dimy": 42}]},
+            //  {"title": "48in x 40in",
+            //   "value": [{"id": "cargo-1", "units": "Imperial", "dimx": 48, "dimy": 40},
+            //             {"id": "cargo-2", "units": "Imperial", "dimx": 48, "dimy": 40}]},
+            //  {"title": "48in x 48in",
+            //   "value": [{"id": "cargo-4", "units": "Imperial", "dimx": 48, "dimy": 48}]},
+            //  {"title": "80cm x 60cm",
+            //   "value": [{"id": "cargo-8", "units": "Metric", "dimx": 80, "dimy": 60}]},
+            //  {"title": "80cm x 120cm",
+            //   "value": [{"id": "cargo-5", "units": "Metric", "dimx": 80, "dimy": 120},
+            //             {"id": "cargo-6", "units": "Metric", "dimx": 80, "dimy": 120}]},
+            //  {"title": "120cm x 100cm",
+            //   "value": [{"id": "cargo-7", "units": "Metric", "dimx": 120, "dimy": 100}]}]
+
+
+
+
+
+            
         },
     },
     watch: {
