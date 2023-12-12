@@ -552,7 +552,7 @@ export function findOverlaps(target, targetXPos, targetYPos, layerChildren){
     return  targetIntersectionArray.map(x=>x[0]);
 }
 
-
+//Finds all overlapping cargo and sorts them in orthogonal directions of proximity to target
 export function dedupeStackedCargo(target, layerChildren){
     // target, targetRect, unresolvedArray
     var targetId = target.attrs.cargoId;    
@@ -1010,7 +1010,8 @@ export function pixelPush(target, layerChildren, saveStartDragCoords) {
 
             var bedRockCount = 0            
             while (pushDistanceAbove > 0 || pushDistanceBelow > 0 || pushDistanceRight > 0 || pushDistanceLeft > 0) {
-                if((pushDistanceAbove == 0 || pushDistanceBelow == 0 || pushDistanceRight == 0 || pushDistanceLeft == 0)) {
+                if((Math.trunc(pushDistanceAbove) == 0 || Math.trunc(pushDistanceBelow) == 0 || 
+                    Math.trunc(pushDistanceRight) == 0 || Math.trunc(pushDistanceLeft) == 0)) {
                     bedRockCount = bedRockCount + 1;
                     // dprt("one pushDistance has hit zero: [pushDistanceAbove, pushDistanceBelow, pushDistanceRight, pushDistanceLeft, bedRockCount]", 
                     //       [pushDistanceAbove, pushDistanceBelow, pushDistanceRight, pushDistanceLeft, bedRockCount]); //tmpdbg
